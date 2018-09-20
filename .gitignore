@@ -1,0 +1,14 @@
+# Compiled Source #
+###################
+*.pyc
+__pycache__/
+
+# Config Files #
+################
+.env
+.coverage
+certs/
+
+# DB #
+######
+db.sqlite3
