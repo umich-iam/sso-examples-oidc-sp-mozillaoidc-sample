@@ -9,7 +9,7 @@ def index(request):
 
 @login_required
 def required(request):
-    username = None
+    useremail = None
     if request.user.is_authenticated:
         useremail = request.user.email
     return HttpResponse("Hello, {}.".format(useremail))
