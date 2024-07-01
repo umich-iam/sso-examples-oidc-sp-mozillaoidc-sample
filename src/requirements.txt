@@ -1,0 +1,4 @@
+cryptography
+Django
+mozilla-django-oidc
+python-decouple

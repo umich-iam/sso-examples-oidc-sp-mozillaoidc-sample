@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 from decouple import config
+from django.core.management.utils import get_random_secret_key
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'wk4xv$_%1+o*eu&m95*-m)z20totf%jafjjni=gdu7m8hga$8f'
+SECRET_KEY = config('SECRET_KEY', default=get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -116,13 +117,19 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # mozilla-django-oidc
 # https://mozilla-django-oidc.readthedocs.io/en/stable/installation.html
 
+OIDC_DOMAIN = config('OIDC_RP_DOMAIN')
 OIDC_RP_CLIENT_ID = config('OIDC_RP_CLIENT_ID')
-OIDC_RP_CLIENT_SECRET = config('OIDC_RP_CLIENT_SECRET')
+OIDC_RP_CLIENT_SECRET = config('OIDC_RP_CLIENT_SECRET', default=None)
 OIDC_RP_SIGN_ALGO = 'RS256'
-OIDC_OP_AUTHORIZATION_ENDPOINT = 'https://shib-idp-test.www.umich.edu/idp/profile/oidc/authorize'
-OIDC_OP_TOKEN_ENDPOINT = 'https://shib-idp-test.www.umich.edu/idp/profile/oidc/token'
-OIDC_OP_USER_ENDPOINT = 'https://shib-idp-test.www.umich.edu/idp/profile/oidc/userinfo'
-OIDC_OP_JWKS_ENDPOINT = 'https://shib-idp-test.www.umich.edu/oidc/keyset.jwk'
+
+OIDC_OP_AUTHORIZATION_ENDPOINT = f'https://{OIDC_DOMAIN}/idp/profile/oidc/authorize'
+OIDC_OP_TOKEN_ENDPOINT = f'https://{OIDC_DOMAIN}/idp/profile/oidc/token'
+OIDC_OP_USER_ENDPOINT = f'https://{OIDC_DOMAIN}/idp/profile/oidc/userinfo'
+OIDC_OP_JWKS_ENDPOINT = f'https://{OIDC_DOMAIN}/oidc/keyset.jwk'
+
+OIDC_RP_SCOPES = 'openid profile email'
+
+OIDC_USE_PKCE = config('OIDC_USE_PKCE', default=True, cast=bool)
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
@@ -141,4 +148,5 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
