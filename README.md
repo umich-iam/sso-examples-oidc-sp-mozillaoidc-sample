@@ -13,12 +13,23 @@ For local development rename `src/dev.sample.env` to `src/.env`
 
 OIDC_RP_CLIENT_ID and OIDC_RP_CLIENT_SECRET must be configured in `.env` before starting the application.
 
-# Starting the app
+# Build
 
+```shell
+docker-compose build
 ```
+
+# Run
+
+```shell
 docker-compose up
 ```
 
 After starting the development server, login by going to http://localhost:8000/hello/ and clicking 'Login'.
 
 Alternatively, going to http://localhost:8000/hello/required/ will redirect you immediately to WebLogin.
+
+# Stop
+```shell
+docker-compose down
+```
